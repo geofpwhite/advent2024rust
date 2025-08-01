@@ -1,6 +1,5 @@
 use std::fs::File;
-use std::io::{Read, Split};
-use std::iter::{Enumerate, Map};
+use std::io::Read;
 
 pub(crate) fn advent2() {
     let Ok(mut file) = File::open("inputs/advent2.txt") else {
@@ -53,10 +52,12 @@ pub(crate) fn advent2() {
                     cl2.append(&mut cl);
                     cl = cl2;
                 }
-                println!("{:?}", cl);
                 if valid(cl) {
                     return true;
                 }
+            }
+            if valid(nums.clone().take(nums.count() - 1).collect()) {
+                return true;
             }
 
             false
@@ -66,10 +67,11 @@ pub(crate) fn advent2() {
 }
 
 fn valid(nums: Vec<i32>) -> bool {
-    let nums = nums.iter().enumerate();
-    let mut prev = nums.clone().next().unwrap().1;
+    let n = nums.clone();
+    let mut next_nums = n.iter().enumerate();
+    let mut prev = next_nums.next().unwrap().1;
     let mut dir = 0;
-    for num in nums {
+    for num in next_nums {
         if num.0 == 1 {
             if prev < num.1 {
                 dir = 1;
@@ -82,5 +84,5 @@ fn valid(nums: Vec<i32>) -> bool {
         }
         prev = num.1
     }
-    true
+    return true;
 }
