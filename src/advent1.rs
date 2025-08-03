@@ -10,7 +10,8 @@ pub(crate) fn advent1() {
     let mut l2: Vec<i32> = vec![];
     for part in parts {
         let nums: Vec<&str> = part.split("   ").collect();
-        let Ok(num) = nums[0].parse::<i32>() else {continue};
+        // let Ok(num) = nums[0].parse::<i32>() else {continue};
+        let num = nums[0].parse::<i32>().unwrap();
         l1.push(num);
         let Ok(num) = nums[1].parse::<i32>() else {continue};
         l2.push(num);

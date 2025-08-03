@@ -7,14 +7,16 @@ pub(crate) fn advent2() {
     };
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
-    let parts: Vec<&str> = contents.split('\n').filter(|s| *s != "").collect();
+    let parts: Vec<&str> = contents.split(&['\n','\r']).filter(|s| *s != "").collect();
     let count_part_1 = parts
         .iter()
         .filter(|s| {
-            let mut string_nums = s.split(" ").enumerate();
-            let first = string_nums.next().unwrap();
-            let mut prev = first.1.to_string().parse::<i32>().unwrap();
-            let mut dir = 0;
+            let mut string_nums: std::iter::Enumerate<std::str::Split<'_, &'static str>> = s.split(" ").enumerate();
+            let first: (usize, &str) = string_nums.next().unwrap();
+            let mut prev: i32 = first.1.to_string().parse::<i32>().unwrap();
+            // let prev: &i32 = &first.1.to_string().parse::<i32>().unwrap();
+
+            let mut dir: i32 = 0;
 
             for sub in string_nums {
                 if let Ok(num) = sub.1.to_string().parse::<i32>() {
@@ -28,7 +30,7 @@ pub(crate) fn advent2() {
                     if (num - prev) * dir <= 0 || (num - prev) * dir > 3 {
                         return false;
                     }
-                    prev = num
+                    prev = num;
                 }
             }
             true
