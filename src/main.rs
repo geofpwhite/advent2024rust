@@ -1,6 +1,8 @@
 mod advent1;
 mod advent2;
 mod advent3;
+mod advent4;
+use crate::advent4::advent4;
 use clap::{Arg, Command};
 
 use crate::advent1::advent1;
@@ -31,6 +33,9 @@ fn main() {
         }
         3 => {
             advent3();
+        }
+        4=>{
+            advent4();
         }
         _ => {}
     }

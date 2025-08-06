@@ -7,7 +7,6 @@ pub(crate) fn advent3() {
     let re = Regex::new(r"mul\(([0-9]{1,3}),([0-9]{1,3})\)").unwrap();
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
-    file.read_to_string(&mut contents).unwrap();
     let p1 = part1(&contents,re.clone());
     println!("{p1}");
     let trim_re = Regex::new(r"[^do|^don't|^mul([0-9]{1,3},[0-9]{1,3})]").unwrap();
