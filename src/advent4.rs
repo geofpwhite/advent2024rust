@@ -11,6 +11,7 @@ pub(crate) fn advent4() {
     let lines = contents.split("\n").filter(|s| s.to_string() != "");
     let mut v: Vec<Vec<char>> = vec![];
     let mut sum = 0;
+    let mut sum2 = 0;
     lines.for_each(|s| {
         let mut line_ary = vec![];
         s.chars().for_each(|ch| {
@@ -22,9 +23,10 @@ pub(crate) fn advent4() {
         i.1.iter().enumerate().for_each(|j| {
             // let v = v.clone();
             sum += search(&v, i.0 as i64, j.0 as i64);
+            sum2 += search_part_2(&v, i.0 as i64, j.0 as i64);
         });
     });
-    println!("{sum}");
+    println!("{sum} \n {sum2}");
 }
 fn search(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
     let mut sum = 0;
@@ -55,4 +57,22 @@ fn search(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
         }
     }
     sum
+}
+
+fn search_part_2(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
+    if lines[i as usize][j as usize] != 'A'{
+        return 0 ;
+    }
+    if i < 1 || j < 1 || i as usize>= lines.len()-1 || j as usize >= lines[0].len()-1{
+        return 0 ;
+    }
+    // println!("{:?}",lines);
+    // -1,-1 , -1,1 , 1,-1 , 1,1
+    //  tl      tr     bl     br
+    let x = format!("{}{}{}",lines[(i-1) as usize][(j-1) as usize],lines[i as usize][j as usize],lines[(i+1) as usize][(j+1) as usize]);
+    let y = format!("{}{}{}",lines[(i+1) as usize][(j-1) as usize],lines[i as usize][j as usize],lines[(i-1) as usize][(j+1) as usize]);
+    match (x!="MAS" && x!="SAM" )||( y != "MAS" && y != "SAM" ){
+        true=> 0,
+        false=> 1
+    }
 }
