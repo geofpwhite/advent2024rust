@@ -26,11 +26,10 @@ pub(crate) fn advent4() {
             sum2 += search_part_2(&v, i.0 as i64, j.0 as i64);
         });
     });
-    println!("{sum} \n {sum2}");
+    println!("{sum}\n{sum2}");
 }
 fn search(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
     let mut sum = 0;
-    // println!("{:?}",lines);
     for i1 in (-1)..2 {
         'outer: for j1 in (-1)..2 {
             if j1 == i1 && i1 == 0 {
@@ -48,7 +47,6 @@ fn search(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
                     continue 'outer;
                 }
                 let char2 = lines[checksi as usize][checksj as usize];
-                // println!("{checksi} {checksj}");
                 if char2 != char {
                     continue 'outer;
                 }
@@ -60,19 +58,28 @@ fn search(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
 }
 
 fn search_part_2(lines: &Vec<Vec<char>>, i: i64, j: i64) -> usize {
-    if lines[i as usize][j as usize] != 'A'{
-        return 0 ;
+    if lines[i as usize][j as usize] != 'A'
+        || i < 1
+        || j < 1
+        || i as usize >= lines.len() - 1
+        || j as usize >= lines[0].len() - 1
+    {
+        return 0;
     }
-    if i < 1 || j < 1 || i as usize>= lines.len()-1 || j as usize >= lines[0].len()-1{
-        return 0 ;
-    }
-    // println!("{:?}",lines);
-    // -1,-1 , -1,1 , 1,-1 , 1,1
-    //  tl      tr     bl     br
-    let x = format!("{}{}{}",lines[(i-1) as usize][(j-1) as usize],lines[i as usize][j as usize],lines[(i+1) as usize][(j+1) as usize]);
-    let y = format!("{}{}{}",lines[(i+1) as usize][(j-1) as usize],lines[i as usize][j as usize],lines[(i-1) as usize][(j+1) as usize]);
-    match (x!="MAS" && x!="SAM" )||( y != "MAS" && y != "SAM" ){
-        true=> 0,
-        false=> 1
+    let x = format!(
+        "{}{}{}",
+        lines[(i - 1) as usize][(j - 1) as usize],
+        lines[i as usize][j as usize],
+        lines[(i + 1) as usize][(j + 1) as usize]
+    );
+    let y = format!(
+        "{}{}{}",
+        lines[(i + 1) as usize][(j - 1) as usize],
+        lines[i as usize][j as usize],
+        lines[(i - 1) as usize][(j + 1) as usize]
+    );
+    match (x != "MAS" && x != "SAM") || (y != "MAS" && y != "SAM") {
+        true => 0,
+        false => 1,
     }
 }
