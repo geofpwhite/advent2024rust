@@ -5,6 +5,7 @@ mod advent4;
 mod advent5;
 mod advent6;
 mod advent7;
+mod advent8;
 use clap::{Arg, Command};
 
 use crate::advent1::advent1;
@@ -14,6 +15,7 @@ use crate::advent4::advent4;
 use crate::advent5::advent5;
 use crate::advent6::advent6;
 use crate::advent7::advent7;
+use crate::advent8::advent8;
 fn main() {
     let matches = Command::new("aoc")
         .version("1.0")
@@ -51,6 +53,9 @@ fn main() {
         }
         7 => {
             advent7();
+        }
+        8 => {
+            advent8();
         }
         _ => {}
     }
