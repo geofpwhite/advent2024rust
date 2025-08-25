@@ -109,7 +109,6 @@ impl GridTrait for Grid {
         let mut visited: HashSet<Coords> = HashSet::new();
         let maxx = self.iter().max_by(|x, y| x.0 .0.cmp(&y.0 .0)).unwrap().0 .0 + 1;
         let maxy = self.iter().max_by(|x, y| x.0 .1.cmp(&y.0 .1)).unwrap().0 .1 + 1;
-        println!("{maxx} {maxy}");
         for i in 0..maxx {
             for j in 0..maxy {
                 if visited.contains(&(i, j)) {
@@ -118,7 +117,6 @@ impl GridTrait for Grid {
                 let (shape, _) = self.other_shape_coords((i, j));
                 let sides = self.get_sides(&shape);
                 score += shape.len() * sides;
-                println!("{score} {} {sides}", shape.len());
                 shape.iter().for_each(|c| {
                     visited.insert(*c);
                 });
