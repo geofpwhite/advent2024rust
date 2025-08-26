@@ -1,3 +1,4 @@
 /target
 .vscode/settings.json
-inputs/*
+/inputs
+inputs/advent1.txt
