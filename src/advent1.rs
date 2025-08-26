@@ -5,7 +5,7 @@ use std::io::Result;
 
 pub(crate) fn advent1() {
     let x: String = read_file_to_string("./inputs/advent1.txt").unwrap();
-    let parts: Vec<&str> = x.split('\n').collect();
+    let parts: Vec<&str> = x.lines().collect();
     let mut l1: Vec<i32> = vec![];
     let mut l2: Vec<i32> = vec![];
     for part in parts {
@@ -13,7 +13,9 @@ pub(crate) fn advent1() {
         // let Ok(num) = nums[0].parse::<i32>() else {continue};
         let num = nums[0].parse::<i32>().unwrap();
         l1.push(num);
-        let Ok(num) = nums[1].parse::<i32>() else {continue};
+        let Ok(num) = nums[1].parse::<i32>() else {
+            continue;
+        };
         l2.push(num);
     }
     l1.sort();

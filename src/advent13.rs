@@ -126,7 +126,7 @@ pub(crate) fn advent13() {
 }
 
 #[derive(Copy, Clone, Debug)]
-struct Coords {
+pub(crate) struct Coords {
     x: i64,
     y: i64,
 }
