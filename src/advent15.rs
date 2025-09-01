@@ -1,7 +1,6 @@
 use std::collections::{vec_deque, HashSet};
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Read};
-use std::ptr::null;
+use std::io::Read;
 
 pub(crate) fn advent15() {
     // Open the file
