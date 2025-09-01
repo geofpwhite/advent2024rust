@@ -17,7 +17,7 @@ pub(crate) fn advent3() {
     // contents = re2.replace_all(&contents, "").to_string();
     contents = re3.replace_all(&contents, "").to_string();
     // println!("{contents}");
-    let p2 = part1(contents.as_str(), re);
+    let p2 = part1(&contents, re);
     println!("{p2}");
     // println!("{sum}");
 }

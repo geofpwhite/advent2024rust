@@ -4,6 +4,7 @@ mod advent11;
 mod advent12;
 mod advent13;
 mod advent14;
+mod advent15;
 mod advent2;
 mod advent3;
 mod advent4;
@@ -20,6 +21,7 @@ use crate::advent11::advent11;
 use crate::advent12::advent12;
 use crate::advent13::advent13;
 use crate::advent14::advent14;
+use crate::advent15::advent15;
 use crate::advent2::advent2;
 use crate::advent3::advent3;
 use crate::advent4::advent4;
@@ -86,6 +88,9 @@ fn main() {
         }
         14 => {
             advent14();
+        }
+        15 => {
+            advent15();
         }
         _ => {}
     }
