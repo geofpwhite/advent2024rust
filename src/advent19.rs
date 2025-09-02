@@ -1,0 +1,1 @@
+pub(crate) fn advent19() {}

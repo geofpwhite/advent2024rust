@@ -5,7 +5,17 @@ mod advent12;
 mod advent13;
 mod advent14;
 mod advent15;
+mod advent16;
+mod advent17;
+mod advent18;
+mod advent19;
 mod advent2;
+mod advent20;
+mod advent21;
+mod advent22;
+mod advent23;
+mod advent24;
+mod advent25;
 mod advent3;
 mod advent4;
 mod advent5;
@@ -22,7 +32,17 @@ use crate::advent12::advent12;
 use crate::advent13::advent13;
 use crate::advent14::advent14;
 use crate::advent15::advent15;
+use crate::advent16::advent16;
+use crate::advent17::advent17;
+use crate::advent18::advent18;
+use crate::advent19::advent19;
 use crate::advent2::advent2;
+use crate::advent20::advent20;
+use crate::advent21::advent21;
+use crate::advent22::advent22;
+use crate::advent23::advent23;
+use crate::advent24::advent24;
+use crate::advent25::advent25;
 use crate::advent3::advent3;
 use crate::advent4::advent4;
 use crate::advent5::advent5;
@@ -91,6 +111,37 @@ fn main() {
         }
         15 => {
             advent15();
+        }
+
+        16 => {
+            advent16();
+        }
+        17 => {
+            advent17();
+        }
+        18 => {
+            advent18();
+        }
+        19 => {
+            advent19();
+        }
+        20 => {
+            advent20();
+        }
+        21 => {
+            advent21();
+        }
+        22 => {
+            advent22();
+        }
+        23 => {
+            advent23();
+        }
+        24 => {
+            advent24();
+        }
+        25 => {
+            advent25();
         }
         _ => {}
     }
