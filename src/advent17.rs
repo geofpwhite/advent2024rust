@@ -29,7 +29,6 @@ pub(crate) fn advent17() {
     println!("{:?} ", p.output);
     // println!("{:?}", p.output)
     let mut nums = find(0, commands.len() - 1, &mut vec![], &commands);
-    while p.next() {}
     nums.sort();
     println!("{}", nums[0]);
 }
