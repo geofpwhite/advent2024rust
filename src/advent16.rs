@@ -1,5 +1,6 @@
 use std::{
     arch::x86_64,
+    boxed,
     collections::{vec_deque, HashMap, HashSet},
     fs::File,
     io::Read,
@@ -63,8 +64,11 @@ pub(crate) fn advent16() {
         node: start_node,
         distance: 0,
         direction: Direction::R,
+        path: Box::from(vec![]),
     };
-    println!("{}", search(real_parse_node_map, startq_node, end));
+    let (score, paths) = search(&real_parse_node_map, startq_node, end);
+    println!("{score}");
+    println!("{}", paths.len());
 }
 
 #[derive(Debug, Eq, PartialEq, Hash, Copy, Clone)]
@@ -80,6 +84,18 @@ struct Node {
     d: Option<(Coords, usize)>,
     r: Option<(Coords, usize)>,
     l: Option<(Coords, usize)>,
+}
+impl Node {
+    fn new(pn: ParseNode) -> Self {
+        Self {
+            x: pn.x,
+            y: pn.y,
+            u: None,
+            d: None,
+            r: None,
+            l: None,
+        }
+    }
 }
 #[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
 struct ParseNode {
@@ -116,12 +132,18 @@ struct QueueNode {
     node: ParseNode,
     distance: usize,
     direction: Direction,
+    path: Box<Vec<Coords>>,
 }
 
-fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> usize {
+fn search(
+    nodes: &HashMap<Coords, ParseNode>,
+    start: QueueNode,
+    end: Coords,
+) -> (usize, HashSet<Coords>) {
     let mut min = usize::MAX;
     let mut visited: HashMap<Coords, HashMap<Direction, usize>> = HashMap::new();
     let mut q = vec_deque::VecDeque::new();
+    let mut winning_paths = HashSet::new();
     q.push_back(start);
     while q.len() > 0 {
         let cur = q.pop_front().unwrap();
@@ -133,6 +155,15 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
         if cur_coords.x == end.x && cur_coords.y == end.y {
             if cur.distance < min {
                 min = cur.distance;
+                winning_paths = HashSet::new();
+                winning_paths.insert(end);
+                for c in cur.path.iter() {
+                    winning_paths.insert(*c);
+                }
+            } else if cur.distance == min {
+                for c in cur.path.iter() {
+                    winning_paths.insert(*c);
+                }
             }
         }
         if visited.contains_key(&Coords {
@@ -171,11 +202,18 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
             );
         }
 
+        let path = &cur.path;
+        let mut new_path = path.clone();
+        new_path.push(Coords {
+            x: cur.node.x,
+            y: cur.node.y,
+        });
         if let Some(neighbor) = cur.node.u {
             let mut possible = QueueNode {
                 node: *nodes.get(&neighbor).unwrap(),
                 distance: cur.distance,
                 direction: Direction::U,
+                path: new_path.clone(),
             };
             match cur.direction {
                 Direction::L | Direction::R => {
@@ -194,6 +232,7 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
                 node: *nodes.get(&neighbor).unwrap(),
                 distance: cur.distance,
                 direction: Direction::D,
+                path: new_path.clone(),
             };
             match cur.direction {
                 Direction::L | Direction::R => {
@@ -212,6 +251,7 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
                 node: *nodes.get(&neighbor).unwrap(),
                 distance: cur.distance,
                 direction: Direction::R,
+                path: new_path.clone(),
             };
             match cur.direction {
                 Direction::U | Direction::D => {
@@ -230,6 +270,7 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
                 node: *nodes.get(&neighbor).unwrap(),
                 distance: cur.distance,
                 direction: Direction::L,
+                path: new_path.clone(),
             };
             match cur.direction {
                 Direction::U | Direction::D => {
@@ -245,5 +286,5 @@ fn search(nodes: HashMap<Coords, ParseNode>, start: QueueNode, end: Coords) -> u
         }
     }
 
-    min
+    (min, winning_paths)
 }
