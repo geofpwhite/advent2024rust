@@ -14,7 +14,6 @@ pub(crate) fn advent17() {
     let a = str::parse::<i64>(&lines.next().unwrap().replace("Register A: ", "").trim()).unwrap();
     let b = str::parse::<i64>(&lines.next().unwrap().replace("Register B: ", "").trim()).unwrap();
     let c = str::parse::<i64>(&lines.next().unwrap().replace("Register C: ", "").trim()).unwrap();
-    println!("{a} {b} {c} {lines:?}");
     let commands: Vec<i8> = lines
         .skip(1)
         .next()
@@ -25,50 +24,34 @@ pub(crate) fn advent17() {
         .map(str::parse::<i8>)
         .map(Result::unwrap)
         .collect();
-    let mut p = Program::new(26 | (1 << (commands.len() * 3 - 1)), b, c, &commands);
-    let mut num_instrs = 0;
-    println!("{:?}", p.output);
-    while p.next() {
-        num_instrs += 1;
-    }
-    println!("{num_instrs}");
-    println!("{:?} ", p.commands);
+    let mut p = Program::new(a, b, c, &commands);
+    while p.next() {}
     println!("{:?} ", p.output);
-    let mut ans = 0;
-    for (index, num) in commands.iter().enumerate().rev() {
-        println!("{num}");
-
-        for i in 0..8 {
-            let mut check = (i << (3 * index)) | ans;
-            let mut p = Program::new(check, 0, 0, &commands);
-            println!("{commands:?} {check:b}");
-            let mut num_instrs = 0;
-            while p.next() {
-                num_instrs += 1;
-            }
-            println!("{:?} {check:b}", p.output);
-            if p.output.len() > index && p.output[index] == *num as i64 {
-                ans |= i << (index * 3);
-                println!("{i} {ans:b}");
-                break;
-            }
-        }
-        let mut p = Program::new(ans, b, c, &commands);
-        let mut num_instrs = 0;
-        while p.next() {
-            num_instrs += 1;
-        }
-        // println!("{:?}", p.output)
-    }
-    let mut p = Program::new(ans, 0, 0, &commands);
-    while p.next() {
-        num_instrs += 1;
-    }
-
-    // println!("{:?}", p.output);
-    println!("{ans} \n {ans:b}");
+    // println!("{:?}", p.output)
+    let mut nums = find(0, commands.len() - 1, &mut vec![], &commands);
+    while p.next() {}
+    nums.sort();
+    println!("{}", nums[0]);
 }
 
+fn find(input: i64, index: usize, values: &mut Vec<i64>, commands: &Vec<i8>) -> Vec<i64> {
+    let mut vc = values.clone();
+    for i in 0..8 {
+        let new_input = (input << 3) + i;
+        let mut p = Program::new(new_input, 0, 0, commands);
+        while p.next() {}
+        if index == 0 {
+            if p.output[0] == commands[0] as i64 {
+                vc.push(new_input);
+            }
+        } else if commands[index] as i64 == p.output[0] {
+            vc = find(new_input, index - 1, &mut vc, commands);
+        }
+    }
+    vc
+}
+
+#[derive(Clone)]
 struct Program {
     instr_pointer: usize,
     a: i64,
