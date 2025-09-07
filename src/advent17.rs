@@ -28,26 +28,26 @@ pub(crate) fn advent17() {
     while p.next() {}
     println!("{:?} ", p.output);
     // println!("{:?}", p.output)
-    let mut nums = find(0, commands.len() - 1, &mut vec![], &commands);
-    nums.sort();
-    println!("{}", nums[0]);
+    let mut nums = find(0, commands.len() - 1, &commands, i64::MAX);
+    println!("{}", nums);
 }
 
-fn find(input: i64, index: usize, values: &mut Vec<i64>, commands: &Vec<i8>) -> Vec<i64> {
-    let mut vc = values.clone();
+fn find(input: i64, index: usize, commands: &Vec<i8>, mut min: i64) -> i64 {
     for i in 0..8 {
         let new_input = (input << 3) + i;
         let mut p = Program::new(new_input, 0, 0, commands);
         while p.next() {}
         if index == 0 {
             if p.output[0] == commands[0] as i64 {
-                vc.push(new_input);
+                if new_input < min {
+                    min = new_input;
+                }
             }
         } else if commands[index] as i64 == p.output[0] {
-            vc = find(new_input, index - 1, &mut vc, commands);
+            min = find(new_input, index - 1, commands, min);
         }
     }
-    vc
+    min
 }
 
 #[derive(Clone)]
