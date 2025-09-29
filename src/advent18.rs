@@ -45,8 +45,6 @@ pub(crate) fn advent18() {
                     return;
                 }
             }
-            // part1(&hs);
-            // println!("{i}");
             i += 1;
         });
 }
